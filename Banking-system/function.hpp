@@ -1,5 +1,9 @@
 #include<string>
+#include<vector>
+#include<fstream>
 #include "account.hpp"
+
+using namespace std;
 // Load accounts from file
 void loadAccounts(vector<Account>& accounts, const string& filename) {
     ifstream file(filename);
@@ -11,8 +15,11 @@ void loadAccounts(vector<Account>& accounts, const string& filename) {
             accounts.emplace_back(name, id, amount);
         }
         file.close();
+    } else {
+        cout << "Error opening file. Starting with an empty account list.\n";
     }
 }
+
 // Save accounts to file
 void saveAccounts(const vector<Account>& accounts, const string& filename) {
     ofstream file(filename);
@@ -25,6 +32,7 @@ void saveAccounts(const vector<Account>& accounts, const string& filename) {
         cout << "Error saving accounts to file.\n";
     }
 }
+
 // Create a new account
 void createAccount(vector<Account>& accounts, const string& filename) {
     string name;
@@ -39,35 +47,8 @@ void createAccount(vector<Account>& accounts, const string& filename) {
     accounts.emplace_back(name, id, amount); // Create the account
     cout << "Account created successfully!\n";
     cout << "Assigned Account ID: " << id << "\n";
-    cout << " Your Account Information:\n";
     accounts.back().displayInfo(); // Display the new account info
 
     // Save the updated accounts to the file
     saveAccounts(accounts, filename);
-}
-// Delate account 
-void deleteAccount(vector<Account>& accounts , const string& filename) {
-    int id;
-    char decision;
-    cout << "Enter account ID to delete: ";
-    cin >> id;
-
-    for (auto acc = accounts.begin(); acc != accounts.end(); ++acc) {
-        if (acc->getId() == id) {
-            cout << "Deleting the following account:\n";
-            acc->displayInfo();
-            cout<<"Are you sure that you want to delete this account\n";
-            cout<<"Yes(Y or y) or No(N or n):";
-            cin>>decision;
-            if(decision=='y' || decision=='Y'){
-                accounts.erase(acc);
-                cout << "Account deleted successfully.\n";  
-            }
-            else{
-                return;
-            }
-            return;
-        }
-    }
-    cout << "Account not found.\n";
 }
