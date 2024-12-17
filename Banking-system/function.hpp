@@ -52,3 +52,30 @@ void createAccount(vector<Account>& accounts, const string& filename) {
     // Save the updated accounts to the file
     saveAccounts(accounts, filename);
 }
+// Display account information
+void displayAccountInfo(const vector<Account>& accounts) {
+    int choice;
+    cout << "1. Display specific account\n2. Display all accounts\nChoose an option: ";
+    cin >> choice;
+
+    if (choice == 1) {
+        int id;
+        cout << "Enter account ID: ";
+        cin >> id;
+
+        for (const auto& account : accounts) {
+            if (account.getId() == id) {
+                account.displayInfo();
+                return;
+            }
+        }
+        cout << "Account not found.\n";
+    } else if (choice == 2) {
+        for (const auto& account : accounts) {
+            account.displayInfo();
+            cout << "------------------\n";
+        }
+    } else {
+        cout << "Invalid option.\n";
+    }
+}
