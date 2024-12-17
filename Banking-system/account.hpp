@@ -3,35 +3,40 @@
 #include <vector>
 #include <string>
 
+
 using namespace std;
+
 
 class Account {
 private:
     string name;
     int id;
-    double amount;
+    double balance;
+    vector<Transaction> transactionHistory;
 
 public:
-    Account(string name, int id, double amount) : name(name), id(id), amount(amount) {}
+// Constructor
+    Account(const string& n, int i, double b)
+        : name(n), id(i), balance(b) {}
 
-    int getId() const { return id; }
-    string getName() const { return name; }
-    double getAmount() const { return amount; }
-
-    void deposit(double amount) { this->amount += amount; }
-    bool withdraw(double amount) {
-        if (amount > this->amount) {
-            cout << "Insufficient funds.\n";
-            return false;
-        }
-        this->amount -= amount;
-        return true;
+    // Deposit function
+    void deposit(double amount) {
+        balance += amount;
+        transactionHistory.push_back(Transaction("Deposit", amount, getCurrentDate()));
+        cout << "Successfully deposited $" << amount << endl;
     }
+
+    // Display account info
     void displayInfo() const {
-        cout << "Name: " << name << "\nID: " << id << "\nAmount: $" << amount << "\n";
+        cout << "Name: " << name << "\nID: " << id << "\nBalance: $" << balance << endl;
     }
 
+    // Return account ID
+    int getId() const { return id; }
+
+    // Convert account to string (for saving to file)
     string toString() const {
-        return name + " " + to_string(id) + " " + to_string(amount);
+        return name + " " + to_string(id) + " " + to_string(balance);
     }
+    
 };

@@ -3,45 +3,63 @@
 #include <vector>
 #include <string>
 #include "function.hpp"
+
 using namespace std;
-// Function declarations
-void loadAccounts(vector<Account>& accounts, const string& filename);
-void saveAccounts(const vector<Account>& accounts, const string& filename);
-void createAccount(vector<Account>& accounts, const string& filename);
-int main(){
+
+// Function to display the menu
+void displayMenu() {
+    cout << "\n==== Bank Account Management ====\n";
+    cout << "1. Create a new account\n";
+    cout << "2. View all accounts\n";
+    cout << "3. Deposit money into an account\n";
+    cout << "4. Exit\n";
+    cout << "Select an option: ";
+}
+
+// Function to display all accounts
+void displayAllAccounts(const vector<Account>& accounts) {
+    cout << "\nList of Accounts:\n";
+    if (accounts.empty()) {
+        cout << "No accounts available.\n";
+        return;
+    }
+
+    for (const auto& account : accounts) {
+        account.displayInfo();
+        cout << "--------------------------\n";
+    }
+}
+
+int main() {
     vector<Account> accounts;
     string filename = "accounts.txt";
+
     // Load accounts from the file
     loadAccounts(accounts, filename);
-    // createAccount(accounts, filename);
-    char choice;
-    while (true) {
-        cout << "\nMenu:\n";
-        cout << "1. Create a new account\n";
-        cout << "2. Display all accounts\n";
-        cout << "3. Exit\n";
-        cout << "Enter your choice: ";
+
+    int choice;
+    do {
+        displayMenu();
         cin >> choice;
 
         switch (choice) {
-            case '1':
+            case 1:
                 createAccount(accounts, filename);
                 break;
-            case '2':
-                cout << "Account List:\n";
-                for (const auto& acc : accounts) {
-                    acc.displayInfo();
-                }
+            case 2:
+                displayAllAccounts(accounts);
                 break;
-            case '3':
-                cout << "Exiting...\n";
-                saveAccounts(accounts, filename);  // Save before exiting
-                return 0;
+            case 3:
+                handleDeposit(accounts, filename);
+                break;
+
+            case 4:
+                cout << "Exiting program. Goodbye!\n";
+                break;
             default:
-                cout << "Invalid choice. Try again.\n";
+                cout << "Invalid option. Please try again.\n";
         }
-    }
+    } while (choice != 5);
 
     return 0;
-
 }
