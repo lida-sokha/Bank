@@ -147,3 +147,68 @@ void deleteAccount(vector<Account>& accounts , const string& filename) {
     }
     cout << "Account not found.\n";
 }
+// Withdraw or transfer
+void withdrawOrTransfer(vector<Account>& accounts, const string& filename, HistoryList& history) {
+    int idFrom, idTo;
+    double amount;
+
+    cout << "Enter your account ID: ";
+    cin >> idFrom;
+
+    Account* fromAccount = nullptr;
+    for (auto& account : accounts) {
+        if (account.getId() == idFrom) {
+            fromAccount = &account;
+            break;
+        }
+    }
+
+    if (!fromAccount) {
+        cout << "Account not found!\n";
+        return;
+    }
+
+    cout << "Enter amount to withdraw: ";
+    cin >> amount;
+
+    cout << "Do you want to transfer this amount to another account? (1: Yes, 0: No): ";
+    int transferChoice;
+    cin >> transferChoice;
+
+    if (transferChoice == 1) {
+        cout << "Enter the ID of the account to transfer to: ";
+        cin >> idTo;
+
+        Account* toAccount = nullptr;
+        for (auto& account : accounts) {
+            if (account.getId() == idTo) {
+                toAccount = &account;
+                break;
+            }
+        }
+
+        if (!toAccount) {
+            cout << "Target account not found!\n";
+            return;
+        }
+
+        // Perform the transfer
+        if (fromAccount->withdraw(amount)) {
+            toAccount->deposit(amount);
+            cout << "Transfer completed successfully!\n";
+
+            // Log history
+            history.logHistory("Withdrew $" + to_string(amount) + " from account ID: " + to_string(idFrom) + " to account ID: " + to_string(idTo));
+
+            saveAccounts(accounts, filename);  // Save immediately
+        }
+    } else {
+        // Regular withdrawal
+        if (fromAccount->withdraw(amount)) {
+            // Log history
+            history.logHistory("Withdrew $" + to_string(amount) + " from account ID: " + to_string(idFrom));
+
+            saveAccounts(accounts, filename);  // Save immediately
+        }
+    }
+}
