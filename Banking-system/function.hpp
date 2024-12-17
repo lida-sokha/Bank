@@ -45,3 +45,29 @@ void createAccount(vector<Account>& accounts, const string& filename) {
     // Save the updated accounts to the file
     saveAccounts(accounts, filename);
 }
+// Delate account 
+void deleteAccount(vector<Account>& accounts , const string& filename) {
+    int id;
+    char decision;
+    cout << "Enter account ID to delete: ";
+    cin >> id;
+
+    for (auto acc = accounts.begin(); acc != accounts.end(); ++acc) {
+        if (acc->getId() == id) {
+            cout << "Deleting the following account:\n";
+            acc->displayInfo();
+            cout<<"Are you sure that you want to delete this account\n";
+            cout<<"Yes(Y or y) or No(N or n):";
+            cin>>decision;
+            if(decision=='y' || decision=='Y'){
+                accounts.erase(acc);
+                cout << "Account deleted successfully.\n";  
+            }
+            else{
+                return;
+            }
+            return;
+        }
+    }
+    cout << "Account not found.\n";
+}
