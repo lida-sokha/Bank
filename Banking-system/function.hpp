@@ -2,6 +2,7 @@
 #include<vector>
 #include<fstream>
 #include "account.hpp"
+#include "history.hpp"
 
 using namespace std;
 // Load accounts from file
