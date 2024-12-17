@@ -52,6 +52,47 @@ void createAccount(vector<Account>& accounts, const string& filename) {
     // Save the updated accounts to the file
     saveAccounts(accounts, filename);
 }
+
+// Deposit to a specific account
+void handleDeposit(vector<Account>& accounts, const string& filename) {
+    if (accounts.empty()) {
+        cout << "No accounts to deposit into. Please create an account first.\n";
+        return;
+    }
+
+    int id;
+    double amount;
+
+    cout << "Enter the Account ID to deposit into: ";
+    cin >> id;
+
+    // Find the account by ID
+    bool found = false;
+    for (auto& account : accounts) {
+        if (account.getId() == id) {
+            cout << "Enter the amount to deposit: ";
+            cin >> amount;
+
+            if (amount <= 0) {
+                cout << "Invalid amount. Deposit amount must be positive.\n";
+                return;
+            }
+
+            account.deposit(amount);
+            cout << "Deposit successful!\n";
+            account.displayInfo();
+            found = true;
+            break;
+        }
+    }
+
+    if (!found) {
+        cout << "Account ID " << id << " not found.\n";
+    }
+
+    // Save updated accounts back to the file
+    saveAccounts(accounts, filename);
+}
 // Display account information
 void displayAccountInfo(const vector<Account>& accounts) {
     int choice;
