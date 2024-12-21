@@ -26,7 +26,6 @@ public:
         head = newNode;  // Update the head to the new node
     }
 
-    // Display history from the most recent to the oldest
     void viewHistory() const {
         HistoryNode* current = head;
         if (!current) {
@@ -34,13 +33,13 @@ public:
             return;
         }
 
-        cout << "History (last history at the top, first history at the bottom):\n";
+        cout << "------------------ History ------------------\n";
         while (current != nullptr) {
             cout << current->history << endl;
             current = current->next;
         }
+        cout<<"---------------------------------------------\n";
     }
-
     // Save history to a file
     void saveHistoryToFile(const string& filename) const {
         ofstream file(filename);
