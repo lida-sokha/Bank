@@ -21,7 +21,6 @@ public:
     void deposit(double amount) { this->amount += amount; }
     bool withdraw(double amount) {
         if (amount > this->amount) {
-            cout << "Insufficient funds.\n";
             return false;
         }
         this->amount -= amount;
