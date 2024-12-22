@@ -1,0 +1,5 @@
+Deleted account ID: 3
+Created account: rachna with ID: 8 and initial amount: $500.000000
+Withdrew $100.000000 from account ID: 4
+Deposited $100.000000 to account ID: 3
+

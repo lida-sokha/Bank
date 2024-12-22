@@ -26,7 +26,6 @@ public:
         head = newNode;  // Update the head to the new node
     }
 
-    // Display history from the most recent to the oldest
     void viewHistory() const {
         HistoryNode* current = head;
         if (!current) {
@@ -34,13 +33,13 @@ public:
             return;
         }
 
-        cout << "History (last history at the top, first history at the bottom):\n";
+        cout << "------------------ History ------------------\n";
         while (current != nullptr) {
             cout << current->history << endl;
             current = current->next;
         }
+        cout<<"---------------------------------------------\n";
     }
-
     // Save history to a file
     void saveHistoryToFile(const string& filename) const {
         ofstream file(filename);
@@ -57,18 +56,34 @@ public:
     }
 
     // Load history from a file and insert it at the top of the list
-    void loadHistoryFromFile(const string& filename) {
-        ifstream file(filename);
-        if (file.is_open()) {
-            string line;
-            while (getline(file, line)) {
-                logHistory(line);  // Insert each line (history) at the top of the list
+    // Load history from a file and insert it at the tail of the list
+void loadHistoryFromFile(const string& filename) {
+    ifstream file(filename);
+    if (file.is_open()) {
+        string line;
+        while (getline(file, line)) {
+            // Insert at the tail of the list
+            if (head == nullptr) {
+                logHistory(line);  // If the list is empty, just insert at the head
+            } else {
+                // Traverse to the last node
+                HistoryNode* current = head;
+                while (current->next != nullptr) {
+                    current = current->next;
+                }
+                // Insert the new history at the tail
+                HistoryNode* newNode = new HistoryNode();
+                newNode->history = line;
+                newNode->next = nullptr;
+                current->next = newNode;  // Link the last node to the new node
             }
-            file.close();
-        } else {
-            cout << "Error loading history from file.\n";
         }
+        file.close();
+    } else {
+        cout << "Error loading history from file.\n";
     }
+}
+
 
     // Destructor to free memory
     ~HistoryList() {
