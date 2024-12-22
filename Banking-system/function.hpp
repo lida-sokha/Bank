@@ -235,6 +235,9 @@ void deleteAccount(vector<Account>& accounts , const string& filename, HistoryLi
             if(decision=='y' || decision=='Y'){
                 accounts.erase(acc);
                 cout << "Account deleted successfully.\n";  
+                history.logHistory("Deleted account ID: " + to_string(id));
+
+                saveAccounts(accounts, filename);  // Save immediately
             }
             else{
                 return;
