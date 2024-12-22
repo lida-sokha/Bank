@@ -54,14 +54,25 @@ void createAccount(vector<Account>& accounts, const string& filename) {
 }
 // Display account information
 void displayAccountInfo(const vector<Account>& accounts) {
+    if (accounts.empty()) {
+        cout << "No accounts to display.\n";
+        return;
+    }
+
     int choice;
     cout << "1. Display specific account\n2. Display all accounts\nChoose an option: ";
-    cin >> choice;
+    if (!(cin >> choice)) {
+        cout << "Invalid input. Please enter a number.\n";
+        return;
+    }
 
     if (choice == 1) {
         int id;
         cout << "Enter account ID: ";
-        cin >> id;
+        if (!(cin >> id)) {
+            cout << "Invalid input. Please enter a number.\n";
+            return;
+        }
 
         for (const auto& account : accounts) {
             if (account.getId() == id) {
@@ -69,13 +80,17 @@ void displayAccountInfo(const vector<Account>& accounts) {
                 return;
             }
         }
-        cout << "Account not found.\n";
+        cout << "Account not found. Please check the ID and try again.\n";
+
     } else if (choice == 2) {
-        for (const auto& account : accounts) {
-            account.displayInfo();
-            cout << "------------------\n";
+        for (size_t i = 0; i < accounts.size(); ++i) {
+            accounts[i].displayInfo();
+            if (i < accounts.size() - 1) {
+                cout << "------------------\n";
+            }
         }
+
     } else {
-        cout << "Invalid option.\n";
+        cout << "Invalid option. Please select 1 or 2.\n";
     }
 }
